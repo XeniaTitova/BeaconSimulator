@@ -16,4 +16,23 @@ public class BeaconInfo {
     public void addTime(long time){
         timeSinceReception += time;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public long getTimeSinceReception() {
+        return timeSinceReception;
+    }
+
+    public void updateBeaconInfo(BeaconInfo newBeaconInfo) {
+        if(newBeaconInfo.getTimeSinceReception() < timeSinceReception) {
+            message = newBeaconInfo.getMessage();
+            timeSinceReception = newBeaconInfo.getTimeSinceReception();
+        }
+    }
 }

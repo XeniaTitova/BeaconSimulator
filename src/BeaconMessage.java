@@ -58,4 +58,18 @@ public class BeaconMessage {
         return decodedBeacon;
     }
 
+    private void updateBeaconList(BeaconInfo newBeacon){
+        String newId = newBeacon.getId();
+        boolean isNew = true;
+        for(BeaconInfo beacon : detectedBeacons){
+            if(newId == beacon.getId()){
+                beacon.updateBeaconInfo(newBeacon);
+                isNew = false;
+                break;
+            }
+        }
+        if(isNew){
+            detectedBeacons.add(newBeacon);
+        }
+    }
 }
