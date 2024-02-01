@@ -10,7 +10,7 @@ public class Beacon {
 
     private String message = "";
     private Coord position = new Coord(0, 0);
-
+    private BeaconMessage beaconMessage = new BeaconMessage();
     private long txPeriod;
     private long rxtxDuration;
     private long rxDelays;
@@ -30,6 +30,7 @@ public class Beacon {
         this.txPeriod = txPeriod;
         this.rxtxDuration = rxtxDuration;
         this.rxDelays = rxDelays;
+        beaconMessage.updateBeaconList(new BeaconInfo(id,message,0));
     }
     public Mode getTrMode() {
         return trMode;
@@ -42,7 +43,7 @@ public class Beacon {
         if (internalTime == rxtxDuration){ trMode = Mode.RECEPTION;
             System.out.println("The internal time of beacon " + id + " is in RECEPTION mode");
         }
-        if (internalTime >= txPeriod & !receptionInProcess){
+        if (internalTime >= txPeriod && !receptionInProcess){
             internalTime = 0;
             trMode = Mode.TRANSMISSION;
             receivedMessage = "";
@@ -50,9 +51,9 @@ public class Beacon {
         }
     }
 
-    public void sendMessage(String msg){
-        if (msg != receivedMessage){
-            if (receivedMessage != "" & reseptionCount != 0){
+    public void transmitMessage(String msg){
+        if (!msg.equals(receivedMessage)){
+            if (!receivedMessage.isEmpty() && reseptionCount != 0){
                 System.out.println("The message : '" + receivedMessage + "' could not be received correctly");
             }
             receivedMessage = msg;
@@ -66,11 +67,15 @@ public class Beacon {
             if(reseptionCount == rxtxDuration){
                 System.out.println("The message : '" + receivedMessage + "' has been received");
                 receptionInProcess = false;
+                beaconMessage.decodeMessage(receivedMessage);
                 receivedMessage = "";
             }
         }
 
     }
 
+    public String requestMessage(){
+        return beaconMessage.createMessage();
+    }
 
 }
