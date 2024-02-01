@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    private static final int NUMBER_OF_BEACONS = 2;
+    private static final int NUMBER_OF_BEACONS = 5;
     private static volatile boolean stopRequested = false;// TODO moche!
 
     public static void main(String[] args) {
@@ -13,7 +13,7 @@ public class Main {
         // Beacon creation / initalisation
         ArrayList<Beacon> myBeacons = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_BEACONS; i++) {
-            myBeacons.add(new Beacon("" +  i, 1000, 100, 3));
+            myBeacons.add(new Beacon("" +  i, 100, 10, 1));
         }
 
         //Endless loop (until a key is pressed)
@@ -50,7 +50,16 @@ public class Main {
         for(Beacon beacon: beacons){
             beacon.tick();
         }
-        beacons.get(0).transmitMessage("Beacon ABC123, 42 tic ago, send message : Hello World!\nBeacon 007, 33 tic ago, send message : Hi!!!");
+        for(Beacon beaconTransmition: beacons){
+            if (beaconTransmition.getTrMode() == Beacon.Mode.TRANSMISSION){
+                for(Beacon beaconReception: beacons){
+                    if (beaconReception.getTrMode() == Beacon.Mode.RECEPTION){ //TODO distance check
+                        beaconReception.transmitMessage(beaconTransmition.requestMessage());
+                    }
+                }
+            }
+        }
+//        beacons.get(0).transmitMessage("Beacon ABC123, 42 tic ago, send message : Hello World!\nBeacon 007, 33 tic ago, send message : Hi!!!");
 
         System.out.println(beacons.get(0).requestMessage());
     }

@@ -31,6 +31,7 @@ public class Beacon {
         this.rxtxDuration = rxtxDuration;
         this.rxDelays = rxDelays;
         beaconMessage.updateBeaconList(new BeaconInfo(id,message,0));
+        System.out.println(internalTime);
     }
     public Mode getTrMode() {
         return trMode;
