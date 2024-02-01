@@ -36,6 +36,15 @@ public class Beacon {
     public Mode getTrMode() {
         return trMode;
     }
+
+    public boolean isReceiving() {
+        return trMode == Mode.RECEPTION;
+    }
+
+    public boolean isTransmitting() {
+        return trMode == Mode.TRANSMISSION;
+    }
+
     public void tick() {
         internalTime ++ ;
 //        System.out.println("The internal time of beacon " + id + " is " + internalTime);

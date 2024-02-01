@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -47,21 +48,20 @@ public class Main {
         System.out.println("Programme arrêté.");
     }
     private static void updateBeacons(ArrayList<Beacon> beacons){
-        for(Beacon beacon: beacons){
-            beacon.tick();
-        }
-        for(Beacon beaconTransmition: beacons){
-            if (beaconTransmition.getTrMode() == Beacon.Mode.TRANSMISSION){
-                for(Beacon beaconReception: beacons){
-                    if (beaconReception.getTrMode() == Beacon.Mode.RECEPTION){ //TODO distance check
-                        beaconReception.transmitMessage(beaconTransmition.requestMessage());
-                    }
-                }
-            }
-        }
-//        beacons.get(0).transmitMessage("Beacon ABC123, 42 tic ago, send message : Hello World!\nBeacon 007, 33 tic ago, send message : Hi!!!");
+        beacons.forEach(Beacon::tick);
+
+        beacons.stream()
+            .filter(Beacon::isTransmitting)
+            .forEach(beaconTransmission -> communicateWithClosestBeacons(beacons, beaconTransmission.requestMessage()));
+
+        //        beacons.get(0).transmitMessage("Beacon ABC123, 42 tic ago, send message : Hello World!\nBeacon 007, 33 tic ago, send message : Hi!!!");
 
         System.out.println(beacons.get(0).requestMessage());
     }
 
+    private static void communicateWithClosestBeacons(List<Beacon> beacons, String message) {
+        beacons.stream()
+            .filter(beaconReception -> (beaconReception.isReceiving())) //TODO distance check)
+            .forEach(beaconReception -> beaconReception.transmitMessage(message));
+    }
 }
