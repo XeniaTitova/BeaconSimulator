@@ -52,7 +52,9 @@ public class Main {
         for(Beacon beacon: beacons){
             beacon.tick();
         }
-        beacons.get(0).sendMessage("AbraCadabra");
+        beacons.get(0).transmitMessage("Beacon ABC123, 42 tic ago, send message : Hello World!\nBeacon 007, 33 tic ago, send message : Hi!!!");
+
+        System.out.println(beacons.get(0).requestMessage());
     }
 
 }

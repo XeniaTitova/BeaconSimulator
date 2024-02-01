@@ -18,7 +18,7 @@ public class BeaconMessage {
     public String createMessage(){
         String msg = "";
         for (BeaconInfo beacon : detectedBeacons) {
-            msg += beacon.strCreation() + "\n";// QQ warnig +=?
+            msg += beacon.strCreation();
         }
         return  msg;
     }
@@ -32,11 +32,11 @@ public class BeaconMessage {
             while (scanner.hasNext()) {
                 String ligne = scanner.next();
                 System.out.println("Ligne : " + ligne);
-                decodeLigne(ligne);
+                BeaconInfo newBeaconInfo = decodeLigne(ligne);
+                updateBeaconList(newBeaconInfo);
             }
         }
     }
-
 
     private BeaconInfo decodeLigne(String msgLigne){
         Pattern regex = Pattern.compile(messagePattern);
@@ -58,11 +58,11 @@ public class BeaconMessage {
         return decodedBeacon;
     }
 
-    private void updateBeaconList(BeaconInfo newBeacon){
+    public void updateBeaconList(BeaconInfo newBeacon){
         String newId = newBeacon.getId();
         boolean isNew = true;
         for(BeaconInfo beacon : detectedBeacons){
-            if(newId == beacon.getId()){
+            if(newId.equals(beacon.getId())){
                 beacon.updateBeaconInfo(newBeacon);
                 isNew = false;
                 break;
@@ -72,4 +72,5 @@ public class BeaconMessage {
             detectedBeacons.add(newBeacon);
         }
     }
+
 }
