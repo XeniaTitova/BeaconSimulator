@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 public class BeaconMessage {
 
     private final String messagePattern = "Beacon (.*), (\\d+) tic ago, send message : (.*)";

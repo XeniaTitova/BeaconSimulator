@@ -30,7 +30,7 @@ public class Beacon {
         this.txPeriod = txPeriod;
         this.rxtxDuration = rxtxDuration;
         this.rxDelays = rxDelays;
-        beaconMessage.updateBeaconList(new BeaconInfo(id,message,0));
+        beaconMessage.updateBeaconList(new BeaconInfo(id,message,0));  // Add ouorselves to the list
         System.out.println(internalTime);
     }
     public Mode getTrMode() {
@@ -38,7 +38,7 @@ public class Beacon {
     }
     public void tick() {
         if (!receptionInProcess){
-            internalTime ++ ;
+            internalTime++;
         }
 //        System.out.println("The internal time of beacon " + id + " is " + internalTime);
 

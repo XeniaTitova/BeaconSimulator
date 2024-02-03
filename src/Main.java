@@ -47,9 +47,8 @@ public class Main {
         System.out.println("Programme arrêté.");
     }
     private static void updateBeacons(ArrayList<Beacon> beacons){
-        for(Beacon beacon: beacons){
-            beacon.tick();
-        }
+        beacons.forEach(Beacon::tick);
+
         for(Beacon beaconTransmition: beacons){
             if (beaconTransmition.getTrMode() == Beacon.Mode.TRANSMISSION){
                 for(Beacon beaconReception: beacons){
