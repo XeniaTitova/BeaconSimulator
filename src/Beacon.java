@@ -37,7 +37,9 @@ public class Beacon {
         return trMode;
     }
     public void tick() {
-        internalTime ++ ;
+        if (!receptionInProcess){
+            internalTime ++ ;
+        }
 //        System.out.println("The internal time of beacon " + id + " is " + internalTime);
 
         //  At the start of each period, information is transmitted, then the beacon receives the information.
