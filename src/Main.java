@@ -1,9 +1,19 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private static final List<Coord> COORDS = List.of(
+      new Coord(0, 3),
+      new Coord(2, 2),
+      new Coord(2, -2),
+      new Coord(-2, -2),
+      new Coord(-2, 2)
+    );
+
+    private static final double MAX_RECEPTION_DISTANCE = 5;
     private static final int NUMBER_OF_BEACONS = 5;
-    private static volatile boolean stopRequested = false;// TODO moche!
+    private static boolean stopRequested = false;// TODO moche!
 
     public static void main(String[] args) {
 //        List<Beacon> myBeacons1 = new List<>(); // QQ pourquoi ne marche pas?
@@ -13,7 +23,7 @@ public class Main {
         // Beacon creation / initalisation
         ArrayList<Beacon> myBeacons = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_BEACONS; i++) {
-            myBeacons.add(new Beacon("" +  i, 100, 10, 1));
+            myBeacons.add(new Beacon("" +  i, COORDS.get(i)));
         }
 
         //Endless loop (until a key is pressed)
@@ -52,7 +62,12 @@ public class Main {
         for(Beacon beaconTransmition: beacons){
             if (beaconTransmition.getTrMode() == Beacon.Mode.TRANSMISSION){
                 for(Beacon beaconReception: beacons){
-                    if (beaconReception.getTrMode() == Beacon.Mode.RECEPTION){ //TODO distance check
+                    double distance = beaconReception.getPosition().distanceFrom(beaconTransmition.getPosition());
+
+//                    System.out.println("Distance from " + beaconReception.getId() + " to "
+//                        + beaconTransmition.getId() + " is " + distance);
+                    if ((beaconReception.getTrMode() == Beacon.Mode.RECEPTION)
+                      && (distance < MAX_RECEPTION_DISTANCE))  { //TODO distance check
                         beaconReception.transmitMessage(beaconTransmition.requestMessage());
                     }
                 }
