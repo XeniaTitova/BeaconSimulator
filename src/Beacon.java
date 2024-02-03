@@ -21,7 +21,7 @@ public class Beacon {
 
     private long reseptionCount = 0;
 
-    private String receivedMessage = "";
+    private  String receivedMessage = "";
 
 //    private List<BeaconTransmission> transmissions;
 
