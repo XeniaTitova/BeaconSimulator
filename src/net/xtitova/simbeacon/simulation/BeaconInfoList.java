@@ -1,3 +1,5 @@
+package net.xtitova.simbeacon.simulation;
+
 import java.util.LinkedList;
 import java.util.List;
 

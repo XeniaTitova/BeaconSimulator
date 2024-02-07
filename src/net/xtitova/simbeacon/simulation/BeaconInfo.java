@@ -1,3 +1,5 @@
+package net.xtitova.simbeacon.simulation;
+
 public class BeaconInfo {
     private String id;
     private String message;
@@ -10,7 +12,7 @@ public class BeaconInfo {
     }
 
     public String strCreation(){
-        return "Beacon " + id + ", " + timeSinceReception + " tic ago, send message : " + message + "\n";
+        return "net.xtitova.simbeacon.simulation.Beacon " + id + ", " + timeSinceReception + " tic ago, send message : " + message + "\n";
     }
 
     public void addTime(long time){

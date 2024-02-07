@@ -1,3 +1,5 @@
+package net.xtitova.simbeacon.simulation;
+
 public class Coord {
     private double x;
     private double y;

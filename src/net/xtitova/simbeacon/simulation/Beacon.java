@@ -1,3 +1,5 @@
+package net.xtitova.simbeacon.simulation;
+
 public class Beacon {
     public enum Mode {
         TRANSMISSION,
@@ -8,7 +10,7 @@ public class Beacon {
 
     private String message = "";
     private Coord position = new Coord(0, 0);
-//    private BeaconMessage beaconMessage = new BeaconMessage();
+//    private net.xtitova.simbeacon.simulation.BeaconMessage beaconMessage = new net.xtitova.simbeacon.simulation.BeaconMessage();
 
     private long txPeriod = 100;
     private long rxtxDuration = 10;
@@ -38,6 +40,10 @@ public class Beacon {
         return trMode;
     }
 
+    public boolean isTransimssion() {
+        return trMode == Mode.TRANSMISSION;
+    }
+
     public Coord getPosition() {
         return position;
     }
@@ -48,6 +54,14 @@ public class Beacon {
 
     public String getId() {
         return id;
+    }
+
+    public double getX() {
+        return position.getX();
+    }
+
+    public double getY() {
+        return position.getY();
     }
 
     public void tick() {
