@@ -7,9 +7,11 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import net.xtitova.simbeacon.simulation.Beacon;
+import net.xtitova.simbeacon.simulation.Coord;
 import net.xtitova.simbeacon.simulation.Simulation;
 
 class DrawPanel extends JPanel implements MouseListener {
+    private static final int BEACON_SIZE = 10;
     public enum ClickMode {
         ADD,
         DELETE
@@ -70,9 +72,20 @@ class DrawPanel extends JPanel implements MouseListener {
     }
 
     private void drawBeacon(Beacon beacon, Graphics g) {
-        Color color = beacon.isTransimssion() ? Color.ORANGE : Color.RED;
-
-        Cercle circle = new Cercle((int)beacon.getX(), (int)beacon.getY(), 10, 30, color, Color.BLUE);
+        Beacon.Mode beaconMode = beacon.getTrMode();
+        Color color;
+        switch(beaconMode) {
+            case Beacon.Mode.TRANSMISSION:
+                color = Color.ORANGE;
+                break;
+            case Beacon.Mode.RECEPTION_IN_PROCESS:
+                color = Color.GREEN;
+                break;
+            default:
+                color = Color.RED;
+        }
+        String id = beacon.getId();
+        Cercle circle = new Cercle((int)beacon.getX(), (int)beacon.getY(), BEACON_SIZE, 40, color, Color.BLUE, id);
 
         circle.draw(g);
     }
@@ -88,14 +101,16 @@ class DrawPanel extends JPanel implements MouseListener {
             addCercle(x, y, 10, 30, Color.RED, Color.BLUE);
         } else {
             // Delete the circle on which you clicked
-//            for (int i = 0; i < cercles.size(); i++) {
-//                Cercle cercle = cercles.get(i);
-//                if (cercle.isInCercle(x, y)) {
-//                    cercles.remove(i); // Remove circle from list
-//                    i--; // Decrement index as list size has decreased
-//                    repaint(); // Refresh the panel after adding a circle
-//                }
-//            }
+            Coord clickCoord = new Coord(x,y);
+            List<Beacon> beacons = simulation.getBeacons();
+            for (int i = 0; i < beacons.size(); i++) {
+                Beacon beacon = beacons.get(i);
+                double distance = clickCoord.distanceFrom(beacon.getPosition());
+                if(distance <= (double) BEACON_SIZE /2+1){
+                    simulation.deleteBeacon(beacon.getId());
+                    repaint();
+                }
+            }
         }
     }
 

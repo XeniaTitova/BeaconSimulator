@@ -9,14 +9,17 @@ class Cercle { // A filled inner circle and an outer crown
     private int rayon_ext;
     private Color color_int;
     private Color color_ext;
+    private String id;
 
-    public Cercle(int xCenter, int yCenter, int rayon, int rayon2, Color color_int, Color color_ext) {
+    public Cercle(int xCenter, int yCenter, int rayon, int rayon2, Color color_int, Color color_ext, String id) {
         this.xCenter = xCenter;
         this.yCenter = yCenter;
         this.rayon_int = rayon;
         this.color_int = color_int;
         this.rayon_ext = rayon2;
         this.color_ext = color_ext;
+        this.id = id;
+
     }
 
     public void draw(Graphics g) {
@@ -27,6 +30,8 @@ class Cercle { // A filled inner circle and an outer crown
         // Draw the outer circle (contour)
         g.setColor(color_ext);
         g.drawOval(xCenter - rayon_ext, yCenter - rayon_ext, rayon_ext * 2, rayon_ext * 2);
+        g.setColor(Color.BLACK);
+        g.drawString( id, xCenter, yCenter);
     }
 
     public Boolean isInCercle(int x, int y){

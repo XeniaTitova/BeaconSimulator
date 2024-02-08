@@ -4,26 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation {
-  private static final double MAX_RECEPTION_DISTANCE = 5;
+  private static final double MAX_RECEPTION_DISTANCE = 40;
 
-  private static final List<Coord> INITIAL_BEACONS = List.of(
-      new Coord(100, 100),
-      new Coord(200, 200),
-      new Coord(150, 150)
-  );
-
+  private int simulationDelay = 100;
   private ArrayList<Beacon> beacons = new ArrayList<>();
   private int lastAddedBeaconNumber = 0;
 
-  private  boolean stopRequested = false;
+  private  boolean pauseRequested = false;
 
   private SimulationUpdateCallback updateCallback = null;
-
-  public Simulation() {
-    for (Coord coords : INITIAL_BEACONS) {
-      addBeacon(coords.getX(), coords.getY());
-    }
-  }
 
   public void addUpdateCallback(SimulationUpdateCallback callback) {
     this.updateCallback = callback;
@@ -31,7 +20,7 @@ public class Simulation {
 
 
   public String addBeacon(double x, double y) {
-    String beaconId = "Beacon " + (++lastAddedBeaconNumber);
+    String beaconId = "B" + (++lastAddedBeaconNumber);
 
     if (getBeaconById(beaconId) != null) {
       throw new RuntimeException("Unexpected problem happened: beacon " + beaconId + " already exists");
@@ -63,16 +52,14 @@ public class Simulation {
 
 
   public void start() {
-    stopRequested = false;
+    pauseRequested = false;
 
     new Thread(() -> {
-      while (!stopRequested) {
-
-        System.out.print(".");
+      while (!pauseRequested) {
         updateBeacons();
 
         try {
-          Thread.sleep(10);
+          Thread.sleep(simulationDelay);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -80,8 +67,12 @@ public class Simulation {
     }).start();
   }
 
+  public void pause() {
+    pauseRequested = true;
+  }
   public void stop() {
-    stopRequested = true;
+
+    pauseRequested = true;
   }
 
   private void updateBeacons() {
@@ -92,8 +83,8 @@ public class Simulation {
         for(Beacon beaconReception: beacons){
           double distance = beaconReception.getPosition().distanceFrom(beaconTransmition.getPosition());
 
-          if ((beaconReception.getTrMode() == Beacon.Mode.RECEPTION)
-              && (distance < MAX_RECEPTION_DISTANCE))  { //TODO distance check
+          if ((beaconReception.getTrMode() != Beacon.Mode.TRANSMISSION)
+              && (distance < MAX_RECEPTION_DISTANCE))  {
             beaconReception.transmitMessage(beaconTransmition.requestMessage());
           }
         }

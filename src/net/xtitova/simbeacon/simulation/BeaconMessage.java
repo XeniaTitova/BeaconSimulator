@@ -29,7 +29,7 @@ public class BeaconMessage {
             // Itérer sur chaque ligne
             while (scanner.hasNext()) {
                 String ligne = scanner.next();
-                System.out.println("Ligne : " + ligne);
+//                System.out.println("Ligne : " + ligne);
                 beaconInfos.add(decodeLigne(ligne));
             }
         }
@@ -47,9 +47,9 @@ public class BeaconMessage {
         String message = matcher.group(3);
 
         // Afficher les résultats
-        System.out.println("ID : " + id);
-        System.out.println("Time Since Reception : " + timeSinceReception);
-        System.out.println("Message : " + message);
+//        System.out.println("ID : " + id);
+//        System.out.println("Time Since Reception : " + timeSinceReception);
+//        System.out.println("Message : " + message);
 
         return new BeaconInfo(id, message, timeSinceReception);
     }

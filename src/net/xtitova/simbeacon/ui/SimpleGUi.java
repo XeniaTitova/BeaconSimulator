@@ -15,18 +15,16 @@ public class SimpleGUi extends JFrame implements SimulationUpdateCallback {
 
     private JCheckBox checkGried = new JCheckBox("Drawing the grid", false);
 
-    private Simulation simulation;
+    private Simulation simulation = new Simulation();
 
     // Three buttons currently inactive to manage simulation
     JButton playButton = new JButton("PLAY");
     JButton pauseButton = new JButton("PAUSE");
     JButton stopButton = new JButton("STOP");
 
-    public SimpleGUi(Simulation simulation) {
+    public SimpleGUi() {
         // Creating a window
         super("Simple Example");
-
-        this.simulation = simulation;
 
         simulation.addUpdateCallback(this);
 
@@ -115,6 +113,7 @@ public class SimpleGUi extends JFrame implements SimulationUpdateCallback {
     }
 
     private void pauseAction() {
+        simulation.pause();
         System.out.println("PAUSE");
     }
 
